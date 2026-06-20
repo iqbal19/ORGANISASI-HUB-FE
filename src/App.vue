@@ -12,9 +12,8 @@ const LayoutView = shallowRef(LayoutDefault);
 const appName = import.meta.env.VITE_NAME_APP;
 
 watch(
-  () => route?.meta,
-  async (value) => {
-    if (!value) return;
+  () => route.path,
+  async () => {
     await handleLayout();
   }
 );
@@ -39,7 +38,9 @@ onMounted(async () => {
 </script>
 
 <template>
-  <layout-view v-show="!loading">
-    <router-view />
-  </layout-view>
+  <div v-show="!loading">
+    <layout-view>
+      <router-view />
+    </layout-view>
+  </div>
 </template>

@@ -20,17 +20,6 @@
           </div>
         </li>
 
-        <!-- Berita Menu -->
-        <li v-if="checkRolePermission(allRole)">
-          <div
-            @click="navigate('/berita')"
-            class="group flex items-center cursor-pointer gap-3.5 py-3 px-6 text-neutral-600 hover:text-neutral-900 hover:bg-neutral-50 border-l-4 transition-all duration-200"
-            :class="isActive('berita') ? 'border-primary bg-primary-light/40 text-primary font-bold' : 'border-transparent'"
-          >
-            <IconNews class="w-5 h-5 transition-transform group-hover:scale-110" :class="isActive('berita') ? 'text-primary' : 'text-neutral-500 group-hover:text-neutral-700'" />
-            <span class="text-sm">Berita</span>
-          </div>
-        </li>
 
         <!-- User Menu -->
         <li v-if="checkRolePermission(['ADMIN_APLIKASI'])">

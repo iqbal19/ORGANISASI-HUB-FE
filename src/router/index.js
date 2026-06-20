@@ -5,7 +5,6 @@ import PageDashboard from "@/views/Dashboard/Pages/PageDashboard.vue";
 import PageNotFound from "@/views/Error/Pages/PageNotFound.vue";
 import PageForbidden from "@/views/Error/Pages/PageForbidden.vue";
 import AuthRouter from "./authRouter";
-import beritaRouter from "./beritaRouter";
 import userRouter from "./userRouter";
 import berandaRouter from "./berandaRouter";
 
@@ -25,7 +24,6 @@ const router = createRouter({
     },
     ...AuthRouter,
     ...berandaRouter,
-    ...beritaRouter,
     ...userRouter,
     {
       path: "/403",
