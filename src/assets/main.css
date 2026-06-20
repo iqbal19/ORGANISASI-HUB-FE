@@ -1,0 +1,102 @@
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap");
+@import "vue-draggable-resizable/style.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+@layer base {
+  html {
+    font-family: "Plus Jakarta Sans", sans-serif;
+  }
+}
+
+@layer components {
+  .base-input {
+    @apply border border-[#BBD6FF] p-2 rounded-lg w-full block text-sm text-neutral-700 focus:border-[#BBD6FF] focus:ring-[#BBD6FF] disabled:bg-neutral-300;
+  }
+
+  .base-button {
+    @apply h-10 py-[10px] px-4 text-xs font-medium text-neutral-100 disabled:text-neutral-100 disabled:bg-neutral-400 rounded-lg hover:bg-neutral-200 select-none;
+  }
+
+  .button-primary {
+    @apply base-button text-neutral-100 disabled:text-neutral-300  bg-primary  hover:bg-primary-semi-dark disabled:hover:bg-neutral-400;
+  }
+
+  .button-primary-outline {
+    @apply base-button text-primary  bg-neutral-100 border  border-primary hover:bg-primary hover:text-neutral-100;
+  }
+
+  .button-primary-link {
+    @apply text-primary disabled:text-neutral-500 hover:text-neutral-400 disabled:hover:text-neutral-500 text-base font-medium;
+  }
+
+  .button-danger {
+    @apply base-button text-neutral-100 bg-danger hover:bg-danger-semi-dark;
+  }
+
+  .button-danger-outline {
+    @apply base-button text-danger bg-neutral-100 border border-danger hover:bg-danger hover:text-neutral-100;
+  }
+
+  .button-danger-link {
+    @apply text-danger disabled:text-neutral-500 hover:text-neutral-400 disabled:hover:text-neutral-500 text-base font-medium;
+  }
+
+  .button-success {
+    @apply base-button text-neutral-100 bg-success hover:bg-success-semi-dark;
+  }
+
+  .button-success-outline {
+    @apply base-button text-success bg-neutral-100 border border-success hover:bg-success hover:text-neutral-100;
+  }
+
+  .button-success-link {
+    @apply text-success disabled:text-neutral-500 hover:text-neutral-400 disabled:hover:text-neutral-500 text-base font-medium;
+  }
+
+  .button-warning {
+    @apply base-button text-neutral-100 bg-warning hover:bg-warning-semi-dark;
+  }
+
+  .button-warning-outline {
+    @apply base-button text-warning bg-neutral-100 border border-warning hover:bg-warning hover:text-neutral-100;
+  }
+
+  .button-warning-link {
+    @apply text-warning disabled:text-neutral-500 hover:text-neutral-400 disabled:hover:text-neutral-500 text-base font-medium;
+  }
+
+  .button-info {
+    @apply base-button text-neutral-100 bg-info hover:bg-info-semi-dark;
+  }
+
+  .button-info-outline {
+    @apply base-button text-info bg-neutral-100 border border-info hover:bg-info hover:text-neutral-100;
+  }
+
+  .button-info-link {
+    @apply text-info disabled:text-neutral-500 hover:text-neutral-400 disabled:hover:text-neutral-500 text-base font-medium;
+  }
+
+  .button-secondary {
+    @apply base-button text-neutral-100 bg-secondary hover:bg-secondary-semi-dark;
+  }
+
+  .button-secondary-outline {
+    @apply base-button text-secondary bg-neutral-100 border border-secondary hover:bg-secondary hover:text-neutral-100;
+  }
+
+  .button-secondary-link {
+    @apply text-secondary disabled:text-neutral-500 hover:text-neutral-400 disabled:hover:text-neutral-500 text-base font-medium;
+  }
+}
+
+.custom-icon {
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+}
