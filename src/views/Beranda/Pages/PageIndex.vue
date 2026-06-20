@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-6 p-1">
+  <div class="flex flex-col gap-6">
     <!-- Header Welcome Banner -->
     <div class="bg-gradient-to-r from-primary to-primary-dark rounded-2xl p-6 md:p-8 text-white shadow-sm">
       <h1 class="text-2xl md:text-3xl font-bold mb-2">Selamat Datang di Portal PDAM Berau</h1>
@@ -9,30 +9,37 @@
       
       <!-- Toast Showcase Buttons -->
       <div class="mt-6 flex flex-wrap gap-3">
-        <button
+        <BaseButton
+          size="sm"
+          variant="secondary"
           @click="showToast('Koneksi database berhasil diverifikasi!', 'success')"
-          class="px-4 py-2 bg-white/20 hover:bg-white/35 text-white font-medium text-xs rounded-lg transition-colors border border-white/10"
         >
           Tes Toast Sukses
-        </button>
-        <button
+        </BaseButton>
+        <BaseButton
+          size="sm"
+          variant="danger"
+          outline
           @click="showToast('Gagal memuat log sistem terbaru.', 'danger')"
-          class="px-4 py-2 bg-white/20 hover:bg-white/35 text-white font-medium text-xs rounded-lg transition-colors border border-white/10"
         >
           Tes Toast Gagal
-        </button>
-        <button
+        </BaseButton>
+        <BaseButton
+          size="sm"
+          variant="warning"
+          outline
           @click="showToast('Peringatan: Kapasitas tampungan air mendekati limit.', 'warning')"
-          class="px-4 py-2 bg-white/20 hover:bg-white/35 text-white font-medium text-xs rounded-lg transition-colors border border-white/10"
         >
           Tes Toast Peringatan
-        </button>
-        <button
+        </BaseButton>
+        <BaseButton
+          size="sm"
+          variant="info"
+          outline
           @click="showToast('Sistem melakukan pemeliharaan berkala pukul 23.00.', 'info')"
-          class="px-4 py-2 bg-white/20 hover:bg-white/35 text-white font-medium text-xs rounded-lg transition-colors border border-white/10"
         >
           Tes Toast Info
-        </button>
+        </BaseButton>
       </div>
     </div>
 
@@ -150,6 +157,7 @@ import { ref } from "vue";
 import { showToast } from "@/extends/plugins/toast";
 import CardStat from "@/components/Basics/CardStat.vue";
 import BaseChart from "@/components/Basics/BaseChart.vue";
+import BaseButton from "@/components/Basics/BaseButton.vue";
 import ToggleSwitch from "@/components/Basics/ToggleSwitch.vue";
 import Badge from "@/components/Basics/Badge.vue";
 import {

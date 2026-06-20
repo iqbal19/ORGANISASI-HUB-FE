@@ -25,16 +25,22 @@
       ></textarea>
 
       <!-- Input Standard/Password Mode -->
-      <div v-else class="relative">
+      <div v-else class="relative flex items-center">
+        <!-- Prefix Icon Slot -->
+        <span v-if="$slots.prefix" class="absolute left-3.5 z-10 flex items-center pointer-events-none text-neutral-400">
+          <slot name="prefix"></slot>
+        </span>
+
         <input
           :id="inputId"
           :type="inputType"
           :placeholder="placeholder"
           :disabled="disabled"
-          class="base-input transition-all duration-200"
+          class="base-input transition-all duration-200 w-full"
           :class="[
             { 'border-danger focus:border-danger focus:ring-danger': error },
-            type === 'password' ? 'pr-10' : ''
+            type === 'password' ? 'pr-10' : '',
+            $slots.prefix ? 'pl-10' : ''
           ]"
           :value="modelValue"
           @input="$emit('update:modelValue', $event.target.value)"

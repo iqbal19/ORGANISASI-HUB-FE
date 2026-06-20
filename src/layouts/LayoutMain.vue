@@ -12,7 +12,7 @@
   </transition>
 
   <!-- Kontainer Utama Aplikasi -->
-  <div class="p-4 sm:ml-64 mt-14 min-h-screen bg-neutral-50/50 transition-all duration-300">
+  <div class="p-4  sm:ml-64 mt-16 min-h-screen bg-[#FCFEFF] transition-all duration-300">
     <slot />
   </div>
 

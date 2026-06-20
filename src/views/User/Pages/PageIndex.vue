@@ -1,38 +1,35 @@
 <template>
-  <div class="flex flex-col gap-6 p-1">
+  <div class="flex flex-col gap-6">
     <!-- Page Header -->
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-[#DFEEFF] pb-5">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
       <div>
         <!-- Breadcrumbs -->
-        <nav class="flex text-xs font-semibold text-neutral-400 mb-1.5 gap-2 items-center">
-          <router-link to="/beranda" class="hover:text-primary transition-colors">Dashboard</router-link>
+        <nav class="flex text-xs font-semibold text-neutral-400 mb-2 gap-2 items-center">
+          <router-link to="/beranda" class="hover:text-primary transition-colors">Beranda</router-link>
           <span class="text-neutral-300">/</span>
-          <span class="text-neutral-600 font-bold text-primary">Manajemen Pengguna</span>
+          <span class="text-neutral-600 font-bold text-primary">Manajemen User</span>
         </nav>
-        <h1 class="text-2xl font-bold text-neutral-900 tracking-tight">Manajemen Pengguna</h1>
-        <p class="text-xs text-neutral-500 mt-1">
-          Daftar akun administrator dan staf yang memiliki hak akses ke dalam sistem internal PDAM Berau.
-        </p>
+        <h1 class="text-2xl font-bold text-neutral-900 tracking-tight">Manajemen User</h1>
       </div>
     </div>
 
     <!-- Actions & Table Card -->
     <div class="flex flex-col gap-4">
       <div class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3">
-        <div class="relative">
-          <input
+        <div class="w-full sm:w-80">
+          <BaseInput
             type="text"
             placeholder="Cari nama pengguna..."
             v-model="search"
-            class="base-input w-full sm:w-80 pl-10"
-          />
-          <IconSearch
-            class="w-5 h-5 text-neutral-400 absolute left-3 top-1/2 transform -translate-y-1/2"
-          />
+          >
+            <template #prefix>
+              <IconSearch class="w-4 h-4" />
+            </template>
+          </BaseInput>
         </div>
-        <button class="button-primary flex items-center justify-center gap-2" type="button" @click="handleAdd">
-          <span>Tambah User Baru</span>
-        </button>
+        <BaseButton type="button" @click="handleAdd">
+          Tambah User Baru
+        </BaseButton>
       </div>
 
       <Table :rows="tableRows" :columns="filteredTableColumns" :loading="loading">
@@ -49,12 +46,12 @@
           </span>
           <span v-else-if="row.field === 'aksi'">
             <div class="flex items-center justify-center gap-2">
-              <button class="button-primary" @click="handleEdit(column)" title="Ubah User">
-                <IconEdit class="w-5 h-5" />
-              </button>
-              <button class="button-danger" @click="handleDelete(column)" title="Hapus User">
-                <IconTrash class="w-5 h-5" />
-              </button>
+              <BaseButton size="sm" variant="primary" @click="handleEdit(column)" title="Ubah User">
+                <IconEdit class="w-4 h-4" />
+              </BaseButton>
+              <BaseButton size="sm" variant="danger" @click="handleDelete(column)" title="Hapus User">
+                <IconTrash class="w-4 h-4" />
+              </BaseButton>
             </div>
           </span>
           <span v-else>
@@ -81,6 +78,8 @@
 import axios from "axios";
 import Table from "@/components/Basics/Table.vue";
 import Badge from "@/components/Basics/Badge.vue";
+import BaseButton from "@/components/Basics/BaseButton.vue";
+import BaseInput from "@/components/Basics/BaseInput.vue";
 import { ref, onMounted, computed } from "vue";
 import {
   openModalConfirm,
@@ -89,7 +88,6 @@ import {
 } from "@/extends/plugins/modal";
 import {
   IconEdit,
-  IconEyeFilled,
   IconSearch,
   IconTrash,
 } from "@tabler/icons-vue";
