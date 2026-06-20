@@ -242,7 +242,7 @@ const handleCloseModal = () => {
 watch(
   () => props.data,
   (newData, oldData) => {
-    if (newData) {
+    if (newData && newData.id) {
       getDetail();
     }
   },

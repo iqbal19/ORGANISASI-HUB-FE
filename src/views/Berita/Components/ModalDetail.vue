@@ -38,4 +38,10 @@ const props = defineProps({
     default: () => ({}),
   },
 });
+
+const emit = defineEmits(["closeModal"]);
+
+const handleCloseModal = () => {
+  emit("closeModal");
+};
 </script>
