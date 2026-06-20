@@ -9,8 +9,8 @@
     <div class="flex flex-col w-full max-w-md p-4">
       <div class="flex justify-center gap-3 mb-3">
         <img
-          src="@/assets/images/logo-berau.png"
-          alt="logo-berau"
+          src="@/assets/images/logo.svg"
+          alt="logo-organisasi"
           class="w-24 h-24 object-contain"
         />
       </div>

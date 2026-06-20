@@ -36,8 +36,7 @@
 
       <!-- Footer Info inside Sidebar (Optional / Premium touch) -->
       <div class="px-6 py-4 border-t border-neutral-100 hidden sm:block">
-        <p class="text-[10px] font-semibold text-neutral-400 uppercase tracking-widest">Sistem internal</p>
-        <p class="text-xs font-bold text-neutral-700 mt-1">PDAM KAB. BERAU</p>
+        <!-- <p class="text-xs font-bold text-neutral-700 mt-1">PDAM KAB. BERAU</p> -->
         <p class="text-[9px] text-neutral-400 mt-0.5">Versi 1.0.0 (Offline Mode)</p>
       </div>
     </div>

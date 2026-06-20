@@ -17,9 +17,9 @@
           
           <a href="#" class="flex items-center ms-3 sm:ms-0 gap-3">
             <img
-              src="@/assets/images/logo-berau.png"
-              alt="Logo Berau"
-              class="w-9 h-9 object-contain transform hover:scale-105 transition-transform"
+              src="@/assets/images/logo.svg"
+              alt="Logo Organisasi Hub"
+              class="w-10 h-10 object-contain transform hover:scale-105 transition-transform"
             />
             <p class="text-neutral-900 text-lg md:text-xl font-bold tracking-tight">
               {{ appName }}
@@ -59,7 +59,7 @@
               <div class="px-4 py-2.5 border-b border-neutral-100">
                 <p class="text-xs font-semibold text-neutral-400 uppercase tracking-wider">Akun Masuk</p>
                 <p class="text-sm font-bold text-neutral-900 truncate mt-0.5">{{ profile?.nama || 'Super Admin' }}</p>
-                <p class="text-xs text-neutral-500 truncate mt-0.5">{{ profile?.email || 'admin@berau.go.id' }}</p>
+                <p class="text-xs text-neutral-500 truncate mt-0.5">{{ profile?.email || 'admin@admin.go.id' }}</p>
               </div>
               <ul class="py-1">
                 <li>

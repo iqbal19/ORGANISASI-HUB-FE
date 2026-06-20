@@ -66,7 +66,7 @@ router.beforeEach((to, from, next) => {
     profileStore.setUser({
       id: "1",
       nama: "Super Admin",
-      email: "admin@berau.go.id",
+      email: "admin@admin.go.id",
       username: "admin",
       role: "ADMIN_APLIKASI"
     });
