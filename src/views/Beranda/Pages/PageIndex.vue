@@ -2,7 +2,7 @@
   <div class="flex flex-col gap-6">
     <!-- Header Welcome Banner -->
     <div class="bg-gradient-to-r from-primary to-primary-dark rounded-2xl p-6 md:p-8 text-white shadow-sm">
-      <h1 class="text-2xl md:text-3xl font-bold mb-2">Selamat Datang di Portal PDAM Berau</h1>
+      <h1 class="text-2xl md:text-3xl font-bold mb-2">Selamat Datang di Portal Organisasi Hub</h1>
       <p class="text-sm md:text-base text-primary-light max-w-2xl font-light">
         Kelola data pelanggan, pantau debit air secara real-time, dan perbarui berita seputar layanan air bersih daerah Kabupaten Berau dengan sistem terintegrasi.
       </p>
