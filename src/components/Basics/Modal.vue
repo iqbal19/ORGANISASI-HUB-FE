@@ -50,7 +50,7 @@ const closeModal = () => {
       tabindex="-1"
       aria-hidden="true"
     >
-      <div class="fixed inset-0 bg-neutral-800 opacity-50 h-auto" @click="closeModal"></div>
+      <div class="fixed inset-0 bg-neutral-800 opacity-50 h-auto"></div>
       <div class="relative w-full max-h-full p-4" :class="classWidth">
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow">

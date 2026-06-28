@@ -13,8 +13,8 @@ export default function useClickOutside(component, callback, excludeComponent) {
     if (
       event.target === component.value ||
       event.composedPath().includes(component.value) ||
-      event.target === excludeComponent.value ||
-      event.composedPath().includes(excludeComponent.value)
+      (excludeComponent && (event.target === excludeComponent.value ||
+      event.composedPath().includes(excludeComponent.value)))
     ) {
       return;
     }

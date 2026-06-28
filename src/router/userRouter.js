@@ -16,7 +16,7 @@ const useRouter = [
         meta: {
           title: "User",
           auth: true,
-          roles: whereRole(["ADMIN_APLIKASI"]),
+          roles: whereRole(["SUPER_ADMIN"]),
           layout: "main",
         },
         name: "list-user",

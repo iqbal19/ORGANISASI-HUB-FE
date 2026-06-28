@@ -50,28 +50,33 @@ export const getExpiredToken = (parsedToken) => {
 export const doRefresh = async (error) => {
   await sleep(50);
   const authStore = useAuthStore();
-  let response = await axios.post("/v1/api/auth/refresh-token", {
-    refresh_token: authStore.authUser?.refresh_token,
+  let response = await axios.post("/api/refresh", {}, {
+    headers: {
+      Authorization: `Bearer ${authStore.authUser?.refresh_token}`
+    }
   });
-  if (response.status === 201) {
-    const dataCurrent = response.data.access_token || null;
+  if (response.status === 200 || response.status === 201 || response.data?.success) {
+    const responseData = response.data.data || response.data;
+    const dataCurrent = responseData.accessToken || null;
     authStore.setAccessToken(dataCurrent);
   }
 };
 
 // Doing logout
 export const doLogout = async () => {
-  await sleep(100);
+  await sleep(50);
   const authStore = useAuthStore();
+  const profileStore = useProfileStore();
   authStore.clear();
+  profileStore.clear();
 };
 
 export const setUserProfile = async () => {
   await sleep(50);
   const profileStore = useProfileStore();
-  let response = await axios.get("/v1/api/auth/me");
-  if (response.status === 200) {
-    const dataCurrent = response.data.data || {};
+  let response = await axios.get("/api/profile");
+  if (response.status === 200 || response.data?.success) {
+    const dataCurrent = response.data.data || response.data || {};
     profileStore.setUser(dataCurrent);
     return dataCurrent;
   }

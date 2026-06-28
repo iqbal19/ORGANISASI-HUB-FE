@@ -1,6 +1,13 @@
 import { useProfileStore } from "@/stores/ProfileStore";
 
-const allRole = ["ADMIN_APLIKASI", "ADMIN"];
+const allRole = [
+  "SUPER_ADMIN",
+  "ADMIN_PUSAT",
+  "ADMIN_DAERAH",
+  "ADMIN_CABANG",
+  "ADMIN_RANTING",
+  "OPERATOR",
+];
 
 function whereRole(data) {
   const result = [];

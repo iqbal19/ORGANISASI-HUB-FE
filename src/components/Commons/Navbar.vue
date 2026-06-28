@@ -14,15 +14,21 @@
             <span class="sr-only">Buka Sidebar</span>
             <IconMenu2 class="w-6 h-6 text-neutral-700" />
           </button>
-          
           <a href="#" class="flex items-center ms-3 sm:ms-0 gap-3">
             <img
+              v-if="profile?.organization?.logo"
+              :src="profile.organization.logo"
+              alt="Logo Organisasi"
+              class="w-10 h-10 object-contain transform hover:scale-105 transition-transform"
+            />
+            <img
+              v-else
               src="@/assets/images/logo.svg"
               alt="Logo Organisasi Hub"
               class="w-10 h-10 object-contain transform hover:scale-105 transition-transform"
             />
             <p class="text-neutral-900 text-lg md:text-xl font-bold tracking-tight">
-              {{ appName }}
+              {{ profile?.organization?.name || appName }}
             </p>
           </a>
         </div>
@@ -41,10 +47,10 @@
             </div>
             <div class="hidden md:flex flex-col items-start leading-none text-left">
               <span class="text-sm font-semibold text-neutral-900">
-                {{ profile?.nama || 'Super Admin' }}
+                {{ profile?.name || 'Super Admin' }}
               </span>
               <span class="text-[10px] text-neutral-500 font-medium uppercase mt-0.5">
-                {{ profile?.role === 'ADMIN_APLIKASI' ? 'Super Admin' : 'Staff' }}
+                {{ profile?.role ? profile.role.replace('_', ' ') : 'Pengguna' }}
               </span>
             </div>
             <IconChevronDown class="w-4 h-4 text-neutral-500 hidden md:block transition-transform duration-200" :class="{ 'rotate-180': isDropdownOpen }" />
@@ -58,7 +64,7 @@
             >
               <div class="px-4 py-2.5 border-b border-neutral-100">
                 <p class="text-xs font-semibold text-neutral-400 uppercase tracking-wider">Akun Masuk</p>
-                <p class="text-sm font-bold text-neutral-900 truncate mt-0.5">{{ profile?.nama || 'Super Admin' }}</p>
+                <p class="text-sm font-bold text-neutral-900 truncate mt-0.5">{{ profile?.name || 'Super Admin' }}</p>
                 <p class="text-xs text-neutral-500 truncate mt-0.5">{{ profile?.email || 'admin@admin.go.id' }}</p>
               </div>
               <ul class="py-1">
@@ -104,14 +110,14 @@ useClickOutside(dropdownRef, () => {
   isDropdownOpen.value = false;
 });
 
-const handleLogout = () => {
+const handleLogout = async () => {
   isDropdownOpen.value = false;
-  doLogout();
+  await doLogout();
+  
+  // Hapus cache manual untuk memastikan tidak ada sisa sesi
   localStorage.removeItem("nex.profile");
   localStorage.removeItem("nex.auth");
-  // Hapus state auto-login agar tidak auto-login kembali
-  const authStore = useProfileStore();
-  const aStore = useProfileStore();
+  
   // Redirect ke login
   router.replace("/login");
 };

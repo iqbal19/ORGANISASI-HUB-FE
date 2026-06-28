@@ -6,7 +6,8 @@
       :for="inputId"
       class="text-sm font-semibold text-neutral-800"
     >
-      {{ label }}
+      {{ label.replace(/\s*\*/g, '') }}
+      <span v-if="label.includes('*')" class="text-red-500">*</span>
     </label>
 
     <!-- Input Body Container -->

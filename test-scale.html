@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body { margin: 0; display: flex; height: 100vh; background: #eee; }
+  .sidebar { width: 300px; background: #fff; }
+  .workspace { flex: 1; background: #ccc; overflow: hidden; display: flex; align-items: center; justify-content: center; padding: 32px; box-sizing: border-box; }
+  .scale-wrapper { transform-origin: center; transition: transform 0.2s; }
+  .canvas { width: 856px; height: 540px; background: white; border: 1px solid red; }
+</style>
+</head>
+<body>
+  <div class="sidebar"></div>
+  <div class="workspace" id="ws">
+    <div class="scale-wrapper" id="sw">
+      <div class="canvas"></div>
+    </div>
+  </div>
+  <script>
+    function calc() {
+      const ws = document.getElementById('ws');
+      const sw = document.getElementById('sw');
+      const padding = 64;
+      const aw = ws.clientWidth - padding;
+      const ah = ws.clientHeight - padding;
+      const scale = Math.min(aw / 856, ah / 540, 1);
+      sw.style.transform = `scale(${scale})`;
+    }
+    window.onresize = calc;
+    calc();
+  </script>
+</body>
+</html>

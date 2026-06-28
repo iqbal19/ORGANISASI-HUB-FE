@@ -24,14 +24,20 @@
       </div>
     </div>
   </div>
-  <div class="w-full">
+  
+  <!-- PREVIEW: LIST (Default) -->
+  <div class="w-full" v-if="previewType === 'list'">
     <div
       v-for="(data, index) in file"
       :key="index"
       class="my-2 py-1 base-input border rounded-lg"
     >
       <div class="py-2 rounded flex justify-between items-center gap-4">
-        <div class="flex items-center overflow-hidden">
+        <div class="flex items-center overflow-hidden gap-3">
+          <img v-if="isImage(data)" :src="isLink(data) ? data : data.base64" class="w-8 h-8 object-cover rounded bg-neutral-100 border border-neutral-200 flex-shrink-0" />
+          <div v-else class="w-8 h-8 bg-neutral-50 flex items-center justify-center rounded border border-neutral-200 flex-shrink-0 text-neutral-400">
+            <IconFile class="w-4 h-4" />
+          </div>
           <p
             class="text-start text-neutral-800 dark:text-dark-800 text-s whitespace-nowrap overflow-hidden overflow-ellipsis line-clamp-1"
           >
@@ -60,13 +66,37 @@
       </div>
     </div>
   </div>
+  <!-- PREVIEW: IMAGE -->
+  <div class="w-full mt-4 flex flex-wrap gap-4" v-else-if="previewType === 'image' && file.length > 0">
+    <div
+      v-for="(data, index) in file"
+      :key="index"
+      class="relative group w-32 h-32 rounded-lg border border-neutral-200 overflow-hidden bg-neutral-50 flex-shrink-0"
+    >
+      <img
+        :src="isLink(data) ? data : data.base64"
+        class="w-full h-full object-cover"
+        alt="Preview"
+      />
+      <!-- Delete Overlay -->
+      <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+        <button
+          class="bg-white rounded-full p-2 text-danger hover:scale-110 transition-transform shadow-sm"
+          type="button"
+          @click.stop="removeFile(index)"
+        >
+          <IconTrash class="w-5 h-5" />
+        </button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
 import { ref, watch } from "vue";
 import { useDropzone } from "vue3-dropzone";
 import { openModalInfo } from "@/extends/plugins/modal";
-import { IconTrash } from "@tabler/icons-vue";
+import { IconTrash, IconFile } from "@tabler/icons-vue";
 
 const props = defineProps({
   defaultFile: {
@@ -88,6 +118,11 @@ const props = defineProps({
   formatFile: {
     type: String,
     default: ".pdf,.jpg,.jpeg,.png",
+  },
+  previewType: {
+    type: String,
+    default: "list", // "list" | "image"
+    validator: (value) => ["list", "image"].includes(value),
   },
 });
 
@@ -176,6 +211,13 @@ const isLink = (data) => {
     "i"
   );
   return !!urlPattern.test(data);
+};
+
+const isImage = (data) => {
+  if (isLink(data)) {
+    return /\.(jpg|jpeg|png|gif|webp)$/i.test(data);
+  }
+  return data.type && data.type.startsWith('image/');
 };
 
 const getFileNameFromURL = (url) => {

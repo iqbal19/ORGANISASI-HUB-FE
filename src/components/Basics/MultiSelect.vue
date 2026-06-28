@@ -1,7 +1,8 @@
 <template>
   <div class="relative">
     <div
-      class="base-input cursor-pointer"
+      class="base-input flex items-center flex-wrap gap-2 min-h-[42px]"
+      :class="{ 'cursor-pointer': !disabled, 'bg-gray-100 cursor-not-allowed opacity-75': disabled }"
       @click="toggleDropdown(!isDropdownOpen)"
       ref="excRef"
     >
@@ -77,6 +78,14 @@ const props = defineProps({
     type: String,
     default: "label",
   },
+  dropUp: {
+    type: Boolean,
+    default: false,
+  },
+  disabled: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const emit = defineEmits(["update:selected"]);
@@ -94,7 +103,8 @@ const filteredList = computed(() => {
   );
 });
 
-const toggleDropdown = (state) => {
+const toggleDropdown = async (state) => {
+  if (props.disabled) return;
   isDropdownOpen.value = state;
 };
 

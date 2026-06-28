@@ -18,10 +18,10 @@ module.exports = {
         900: "#2b2b2b",
       },
       primary: {
-        DEFAULT: "#3686FF",
-        light: "#DFEEFF",
-        "semi-dark": "#2C70CC",
-        dark: "#2457A8",
+        DEFAULT: "var(--color-primary)",
+        light: "var(--color-primary-light)",
+        "semi-dark": "var(--color-primary-semi-dark)",
+        dark: "var(--color-primary-dark)",
       },
       secondary: {
         DEFAULT: "#6c757d",

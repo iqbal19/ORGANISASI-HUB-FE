@@ -27,20 +27,25 @@
             </template>
           </BaseInput>
         </div>
-        <BaseButton type="button" @click="handleAdd">
-          Tambah User Baru
-        </BaseButton>
+        <div class="flex items-center gap-2">
+          <BaseButton type="button" variant="warning" outline @click="handleResetPassword">
+            Reset Password
+          </BaseButton>
+          <BaseButton type="button" @click="handleAdd">
+            Tambah User Baru
+          </BaseButton>
+        </div>
       </div>
 
-      <Table :rows="tableRows" :columns="filteredTableColumns" :loading="loading">
+      <Table :rows="tableRows" :columns="tableColumns" :loading="loading" @handleSort="handleSort">
         <template #table-content="{ column, row, index }">
           <span v-if="row.field === 'index'">
             {{ (page - 1) * limit + index + 1 }}
           </span>
           <span v-else-if="row.field === 'role'">
             <Badge
-              :variant="column.role === 'ADMIN_APLIKASI' ? 'primary' : 'secondary'"
-              :text="column.role === 'ADMIN_APLIKASI' ? 'Super Admin' : 'Staff'"
+              :variant="column.role === 'SUPER_ADMIN' ? 'primary' : 'secondary'"
+              :text="column.role.replace('_', ' ')"
               pill
             />
           </span>
@@ -59,6 +64,13 @@
           </span>
         </template>
       </Table>
+
+      <!-- Pagination -->
+      <Pagination
+        :pagenation="paginationData"
+        @pageTo="handlePageChange"
+        :defaultLimit="limit"
+      />
     </div>
   </div>
   <ModalAdd
@@ -72,6 +84,11 @@
     @refresh="getList"
     :data="selectedData"
   />
+  <ModalResetPassword
+    :showModal="showModalResetPassword"
+    @closeModal="handleCloseModal"
+    @refresh="getList"
+  />
 </template>
 
 <script setup>
@@ -80,7 +97,8 @@ import Table from "@/components/Basics/Table.vue";
 import Badge from "@/components/Basics/Badge.vue";
 import BaseButton from "@/components/Basics/BaseButton.vue";
 import BaseInput from "@/components/Basics/BaseInput.vue";
-import { ref, onMounted, computed } from "vue";
+import Pagination from "@/components/Basics/Pagination.vue";
+import { ref, onMounted, computed, watch } from "vue";
 import {
   openModalConfirm,
   handleConfirm,
@@ -90,15 +108,22 @@ import {
   IconEdit,
   IconSearch,
   IconTrash,
+  IconKey,
 } from "@tabler/icons-vue";
 import ModalAdd from "../Components/ModalAdd.vue";
 import ModalEdit from "../Components/ModalEdit.vue";
+import ModalResetPassword from "../Components/ModalResetPassword.vue";
 
 const showModalAdd = ref(false);
 const showModalEdit = ref(false);
+const showModalResetPassword = ref(false);
 const loading = ref(true);
 const page = ref(1);
 const limit = ref(10);
+const sortBy = ref("");
+const sortOrder = ref("");
+const paginationData = ref(null);
+
 const tableRows = ref([
   {
     label: "No",
@@ -107,15 +132,17 @@ const tableRows = ref([
   },
   {
     label: "Nama Lengkap",
-    field: "nama",
+    field: "name",
     align: "left",
     width: "350px",
+    isSort: { activeSort: "" },
   },
   {
     label: "Email",
     field: "email",
     align: "left",
     width: "350px",
+    isSort: { activeSort: "" },
   },
   {
     label: "Role",
@@ -126,25 +153,52 @@ const tableRows = ref([
 const tableColumns = ref([]);
 const selectedData = ref(null);
 const search = ref("");
+let searchTimeout = null;
 
-
-const filteredTableColumns = computed(() => {
-  if (!search.value) {
-    return tableColumns.value;
-  }
-  return tableColumns.value.filter((column) =>
-    column.nama.toLowerCase().includes(search.value.toLowerCase())
-  );
+watch(search, () => {
+  if (searchTimeout) clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(() => {
+    page.value = 1;
+    getList();
+  }, 500);
 });
+
+const handlePageChange = (data) => {
+  page.value = data.page;
+  limit.value = data.limit;
+  getList();
+};
+
+const handleSort = (row) => {
+  // Reset activeSort di kolom lain
+  tableRows.value.forEach((r) => {
+    if (r.field !== row.field && r.isSort) {
+      r.isSort.activeSort = "";
+    }
+  });
+
+  if (row.isSort.activeSort) {
+    sortBy.value = row.field;
+    sortOrder.value = row.isSort.activeSort.toLowerCase();
+  } else {
+    sortBy.value = "";
+    sortOrder.value = "";
+  }
+  getList();
+};
 
 const handleCloseModal = () => {
   selectedData.value = null;
   showModalAdd.value = false;
   showModalEdit.value = false;
+  showModalResetPassword.value = false;
 };
 const handleEdit = (column) => {
   selectedData.value = column;
   showModalEdit.value = true;
+};
+const handleResetPassword = () => {
+  showModalResetPassword.value = true;
 };
 const handleAdd = () => {
   showModalAdd.value = true;
@@ -157,7 +211,7 @@ const handleDelete = (column) => {
   });
   handleConfirm(async () => {
     try {
-      let response = await axios.delete("/v1/api/user/" + column.id);
+      let response = await axios.delete("/api/users/" + column.id);
       if (response.status === 200) {
         openModalInfo({
           message: "Berhasil hapus User",
@@ -178,9 +232,24 @@ const handleDelete = (column) => {
 const getList = async () => {
   loading.value = true;
   try {
-    let response = await axios.get(`/v1/api/user`);
-    if (response.status === 200) {
-      tableColumns.value = response.data.data;
+    let params = `?page=${page.value}&limit=${limit.value}`;
+    if (search.value) params += `&search=${search.value}`;
+    if (sortBy.value) params += `&sortBy=${sortBy.value}&sortOrder=${sortOrder.value}`;
+
+    let response = await axios.get(`/api/users${params}`);
+    if (response.status === 200 || response.data?.success) {
+      const dataResponse = response.data.data;
+      tableColumns.value = dataResponse?.data || dataResponse || [];
+
+      // Map backend meta to match Pagination component requirements
+      const meta = dataResponse?.meta;
+      if (meta) {
+        paginationData.value = {
+          prev_page_url: meta.page > 1 ? `?page=${meta.page - 1}` : null,
+          next_page_url: meta.page < meta.lastPage ? `?page=${meta.page + 1}` : null,
+          last_page_url: `?page=${meta.lastPage}`,
+        };
+      }
     }
   } catch (error) {
     console.error(error);

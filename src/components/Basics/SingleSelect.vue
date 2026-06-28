@@ -1,7 +1,8 @@
 <template>
-  <div class="relative w-full">
+  <div class="relative w-full" :class="{ 'z-50': isDropdownOpen }">
     <div
-      class="base-input cursor-pointer"
+      class="base-input flex justify-between items-center"
+      :class="{ 'cursor-pointer': !disabled, 'bg-gray-100 cursor-not-allowed opacity-75': disabled }"
       @click="toggleDropdown(!isDropdownOpen)"
       ref="excRef"
     >
@@ -14,14 +15,17 @@
         </p>
       </div>
       <p v-else class="text-sm">Pilih</p>
+      <IconChevronDown class="w-4 h-4 text-neutral-500 transition-transform duration-200" :class="{ 'rotate-180': isDropdownOpen }" />
     </div>
 
     <div
       v-if="isDropdownOpen"
-      class="absolute z-10 mt-1 shadow w-full"
+      class="absolute z-50 shadow w-full"
+      :class="computedDropUp ? 'bottom-full mb-1' : 'top-full mt-1'"
       ref="comRef"
     >
       <input
+        v-if="searchable"
         v-model="searchQuery"
         type="text"
         class="base-input"
@@ -53,8 +57,8 @@
 
 <script setup>
 import useClickOutside from "@/extends/helpers/util.clickoutside";
-import { ref, watch, computed } from "vue";
-import { IconX } from "@tabler/icons-vue";
+import { ref, watch, computed, nextTick } from "vue";
+import { IconX, IconChevronDown } from "@tabler/icons-vue";
 
 const props = defineProps({
   list: {
@@ -69,6 +73,18 @@ const props = defineProps({
   labelKey: {
     type: String,
     default: "label",
+  },
+  searchable: {
+    type: Boolean,
+    default: true,
+  },
+  dropUp: {
+    type: Boolean,
+    default: false,
+  },
+  disabled: {
+    type: Boolean,
+    default: false,
   },
 });
 
@@ -87,8 +103,33 @@ const filteredList = computed(() => {
   );
 });
 
-const toggleDropdown = (state) => {
+const isAutoDropUp = ref(false);
+
+const computedDropUp = computed(() => {
+  return props.dropUp || isAutoDropUp.value;
+});
+
+const toggleDropdown = async (state) => {
+  if (props.disabled) return;
   isDropdownOpen.value = state;
+  
+  if (state && !props.dropUp) {
+    await nextTick();
+    if (comRef.value && excRef.value) {
+      const rect = excRef.value.getBoundingClientRect();
+      const dropdownHeight = comRef.value.offsetHeight;
+      const spaceBelow = window.innerHeight - rect.bottom;
+      
+      // Jika ruang di bawah tidak cukup dan ruang di atas lebih besar
+      if (spaceBelow < dropdownHeight && rect.top > spaceBelow) {
+        isAutoDropUp.value = true;
+      } else {
+        isAutoDropUp.value = false;
+      }
+    }
+  } else {
+    isAutoDropUp.value = false;
+  }
 };
 
 const isSelected = (item) => {
